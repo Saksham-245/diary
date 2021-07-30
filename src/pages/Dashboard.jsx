@@ -44,8 +44,7 @@ const Dashboard = () => {
     setDiaries(data);
   };
 
-  useEffect(() => {
-    fetchDiaries();
+  const fetchQuote = async () => {
     try {
       axios
         .get("https://quotes.rest/qod?language=en")
@@ -58,6 +57,11 @@ const Dashboard = () => {
     } catch (e) {
       console.error(e);
     }
+  };
+
+  useEffect(() => {
+    fetchDiaries();
+    fetchQuote();
   }, []);
 
   const handleMenu = (event) => {
