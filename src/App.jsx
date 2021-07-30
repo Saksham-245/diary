@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import "./App.css";
@@ -11,7 +11,7 @@ function App() {
         <Switch>
           <Route path="/" exact component={Login} />
           <Route path="/dashboard" component={Dashboard} />
-          <Route path="*" component={Dashboard} />
+          <Redirect from="*" to={Dashboard} />
         </Switch>
       </BrowserRouter>
     </div>
