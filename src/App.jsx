@@ -16,7 +16,7 @@ function App() {
       <BrowserRouter>
         <HashRouter>
           <Route path="/" exact component={Login} />
-          <Route path="dashboard" component={Dashboard} />
+          <Route path="/dashboard" component={Dashboard} />
           <Redirect from="*" to={Dashboard} />
         </HashRouter>
       </BrowserRouter>
