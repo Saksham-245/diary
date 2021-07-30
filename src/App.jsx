@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter,
+  HashRouter,
+  Redirect,
+  Route,
+  Switch,
+} from "react-router-dom";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import "./App.css";
@@ -8,11 +14,11 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Switch>
+        <HashRouter>
           <Route path="/" exact component={Login} />
           <Route path="/dashboard" component={Dashboard} />
           <Redirect from="*" to={Dashboard} />
-        </Switch>
+        </HashRouter>
       </BrowserRouter>
     </div>
   );
