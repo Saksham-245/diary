@@ -59,9 +59,10 @@ const Dashboard = () => {
     }
   };
 
+  fetchQuote();
+
   useEffect(() => {
     fetchDiaries();
-    fetchQuote();
   }, []);
 
   const handleMenu = (event) => {
