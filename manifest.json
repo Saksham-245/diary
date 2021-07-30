@@ -1,0 +1,17 @@
+{
+  "dir": "ltr",
+  "lang": "en",
+  "name": "",
+  "short_name": "Diary",
+  "scope": "/dashboard",
+  "display": "standalone",
+  "start_url": "/",
+  "background_color": "#9b33a3",
+  "theme_color": "#40c4c2",
+  "description": "",
+  "orientation": "any",
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "icons": [],
+  "screenshots": []
+}
