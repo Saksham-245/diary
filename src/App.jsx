@@ -14,11 +14,11 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <HashRouter>
+        <Switch>
           <Route path="/" exact component={Login} />
           <Route path="/dashboard" component={Dashboard} />
           <Redirect from="*" to={Dashboard} />
-        </HashRouter>
+        </Switch>
       </BrowserRouter>
     </div>
   );
