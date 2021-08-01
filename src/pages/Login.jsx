@@ -40,6 +40,7 @@ const Login = () => {
     setOpen(!open);
   };
 
+  console.log(import.meta.env.VITE_BASE_URL);
   if (session) {
     history.replace("/dashboard");
   } else {

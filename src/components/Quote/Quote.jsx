@@ -6,7 +6,7 @@ import "../Quote/Quote.css";
 const Quote = ({ quote, author }) => {
   return (
     <div className="quote-title">
-      <div class="quote">
+      <marquee direction="left">
         <Typography
           variant="subtitle1"
           component="p"
@@ -14,7 +14,7 @@ const Quote = ({ quote, author }) => {
         >
           Today Quote: {quote} By: {author}
         </Typography>
-      </div>
+      </marquee>
     </div>
   );
 };
