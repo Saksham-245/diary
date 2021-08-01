@@ -59,10 +59,13 @@ const Dashboard = () => {
     }
   };
 
-  fetchQuote();
+  if (quote === "" && author === "") {
+    fetchQuote();
+  }
 
   useEffect(() => {
     fetchDiaries();
+    return;
   }, []);
 
   const handleMenu = (event) => {
