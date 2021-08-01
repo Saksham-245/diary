@@ -23,6 +23,7 @@ const Login = () => {
     footer: {
       marginLeft: "3%",
       marginTop: "30%",
+      color: "red",
       "@media(max-width: 480px)": {
         marginTop: "100%",
         marginLeft: "8%",
@@ -40,7 +41,6 @@ const Login = () => {
     setOpen(!open);
   };
 
-  console.log(import.meta.env.VITE_BASE_URL);
   if (session) {
     history.replace("/dashboard");
   } else {
@@ -57,9 +57,7 @@ const Login = () => {
         </Backdrop>
         <GoogleButton onClick={handleLogin} />
         <Toolbar className={classes.footer}>
-          <Typography variant="body1" color="secondary">
-            Made by Saksham Mathur
-          </Typography>
+          <Typography variant="body1">Made by Saksham Mathur</Typography>
         </Toolbar>
       </div>
     </div>
