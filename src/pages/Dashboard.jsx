@@ -44,7 +44,7 @@ const Dashboard = () => {
     setDiaries(data);
   };
 
-  const fetchQuote = async () => {
+  const fetchQuote = () => {
     try {
       axios
         .get("https://quotes.rest/qod?language=en")
