@@ -21,7 +21,6 @@ const Login = () => {
       },
     },
     footer: {
-      marginLeft: "3%",
       marginTop: "30%",
       color: "red",
       "@media(max-width: 480px)": {
