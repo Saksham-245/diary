@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState,useMemo,useCallback, useRef} from "react";
 import {Redirect, useHistory} from "react-router";
-import {makeStyles} from "@material-ui/core";
+import {Fab, makeStyles} from "@material-ui/core";
 import axios from "axios";
 import {format} from "date-fns";
 import supabase from "../utils/supabase";
@@ -8,6 +8,9 @@ import NavBar from "../components/NavBar/NavBar";
 import Add from "../components/ButtonAdd/Add";
 import Quote from "../components/Quote/Quote";
 import Cards from "../components/Cards/Cards";
+
+import './dashboard.css'
+import { QUOTE_API_KEY } from "../utils/env";
 
 const useStyles = makeStyles((theme) => ({
     spanText: {
@@ -35,37 +38,41 @@ const Dashboard = () => {
     const [quote, setQuote] = useState("");
     const [author, setAuthor] = useState("");
 
-    const fetchDiaries = async () => {
+    const fetchDiaries = useCallback(async () => {
         let {data, error} = await supabase
             .from("diaries")
             .select("*")
             .order("id", {ascending: false});
         if (error) console.error(error);
         setDiaries(data);
-    };
+    }, []);
 
-    const fetchQuote = () => {
+    const fetchQuote = useCallback(async () => {
         try {
-            axios
-                .get("https://quotes.rest/qod?language=en")
-                .then((res) => {
-                    const {author, quote} = res.data.contents.quotes[0];
-                    setQuote(quote);
-                    setAuthor(author);
-                })
-                .catch((e) => console.error(e));
+            const res = await axios.get("https://api.api-ninjas.com/v1/quotes?category=happiness", {
+                headers: {
+                    'X-Api-Key': QUOTE_API_KEY
+                }
+            });
+            const { author, quote } = res.data[0];
+            setQuote(quote);
+            setAuthor(author);
         } catch (e) {
             console.error(e);
         }
-    };
+    }, []);
 
-    if (quote === "" && author === "") {
-        fetchQuote();
-    }
+    useEffect(() => {
+        if (quote === "" && author === "") {
+            // call fetchQuote if quote and author are empty
+            fetchQuote();
+        }
+    }, [fetchQuote, quote, author]);
+
 
     useEffect(() => {
         fetchDiaries();
-    }, []);
+    }, [fetchDiaries]);
 
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
@@ -83,17 +90,16 @@ const Dashboard = () => {
     const handleClickOpen = () => {
         setOpen(true);
     };
-    // eslint-disable-next-line
+
     const handleSave = async () => {
         if (note === "") {
             setError(true);
             setOpen(true);
         } else {
             setOpen(false);
-            // eslint-disable-next-line no-unused-vars
             const {_, error} = await supabase.from("diaries").insert([
                 {
-                    user_id: userData.currentSession.user.id,
+                    user_id: userId,
                     note: note,
                     inserted_at: selectedDate,
                 },
@@ -107,7 +113,7 @@ const Dashboard = () => {
     return (
         <div className="dashboard">
             {userData ? (
-                <div>
+                <div className="container">
                     <NavBar
                         open={anchor}
                         handleMenu={handleMenu}
@@ -117,20 +123,8 @@ const Dashboard = () => {
                         name={userData.currentSession.user.user_metadata.full_name}
                         imageUrl={userData.currentSession.user.user_metadata.avatar_url}
                     />
-                    <Quote quote={quote} author={author}/>
-                    <Add
-                        handleClickOpen={handleClickOpen}
-                        open={open}
-                        handleClose={handleClose}
-                        handleSave={handleSave}
-                        handleDateChange={(date) => setSelectedDate(date)}
-                        selectedDate={selectedDate}
-                        handleNoteChange={(e) => setNote(e.target.value)}
-                        note={note}
-                        error={error}
-                        helperText={error ? "Please fill this field" : null}
-                    />
-                    <div className="cards">
+                    <Quote quote={quote} author={author} />
+                    <div className="cards-container">
                         {diaries.length ? (
                             diaries.map((todo) => {
                                 return (
@@ -143,14 +137,28 @@ const Dashboard = () => {
                             })
                         ) : (
                             <span className={classes.spanText}>
-                Hello {userData.currentSession.user.user_metadata.full_name} you
-                don't have diary note for now!
-              </span>
+                                Hello {userData.currentSession.user.user_metadata.full_name} you
+                                don't have diary note for now!
+                            </span>
                         )}
+                    </div>
+                    <div className="fab-container">
+                        <Add
+                            handleClickOpen={handleClickOpen}
+                            open={open}
+                            handleClose={handleClose}
+                            handleSave={handleSave}
+                            handleDateChange={(date) => setSelectedDate(date)}
+                            selectedDate={selectedDate}
+                            handleNoteChange={(e) => setNote(e.target.value)}
+                            note={note}
+                            error={error}
+                            helperText={error ? "Please fill this field" : null}
+                        />
                     </div>
                 </div>
             ) : (
-                <Redirect to="/"/>
+                <Redirect to="/" />
             )}
         </div>
     );
